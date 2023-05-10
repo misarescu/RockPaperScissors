@@ -2,8 +2,8 @@ import React from "react";
 
 type Props = {};
 
-function GamePage({}: Props) {
-  return <div>GamePage</div>;
+function CreatePage({}: Props) {
+  return <div>CreatePage</div>;
 }
 
-export default GamePage;
+export default CreatePage;

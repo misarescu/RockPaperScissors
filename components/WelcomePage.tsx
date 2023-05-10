@@ -4,26 +4,15 @@
 
 import React from "react";
 import Button from "./Button";
+import StyledLink from "./StyledLink";
 
 type Props = {};
 
 function WelcomePage({}: Props) {
   return (
     <>
-      <Button
-        onClick={() => {
-          console.log("Create Game button pressed");
-        }}
-      >
-        Create Game
-      </Button>
-      <Button
-        onClick={() => {
-          console.log("Join Game button pressed");
-        }}
-      >
-        Join Game
-      </Button>
+      <StyledLink href={"/game/create"}>Create Game</StyledLink>
+      <StyledLink href={"/game/join"}>Join Game</StyledLink>
     </>
   );
 }

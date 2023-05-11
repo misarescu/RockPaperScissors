@@ -17,8 +17,6 @@ function CreatePage() {
     <>
       <Form
         onSubmit={(e) => {
-          console.log("Hello from the form");
-
           try {
             const roomData: GameRoomType = {
               id: uuid(),

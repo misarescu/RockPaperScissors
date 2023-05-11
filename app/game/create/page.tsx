@@ -2,18 +2,11 @@
 import Button from "@/components/Button";
 import Form from "@/components/Form";
 import Input from "@/components/Input";
+import { GameRoomSchema, GameRoomType } from "@/types/GameRoom";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { v4 as uuid } from "uuid";
 import { z } from "zod";
-
-const GameRoomSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string().min(3).max(32),
-  playerLimit: z.number().min(2).max(12),
-});
-
-type GameRoomType = z.infer<typeof GameRoomSchema>;
 
 function CreatePage() {
   // const gameRoomId = uuid();

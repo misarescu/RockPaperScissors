@@ -11,6 +11,7 @@ function Form(props: Props) {
     <form
       // don't do the default behaviour
       onSubmit={submitFunction}
+      className="flex flex-col justify-center items-center"
     >
       {props.children}
     </form>

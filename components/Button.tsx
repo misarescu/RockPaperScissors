@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 
-type Props = React.ComponentProps<"button"> & { className: string };
+type Props = React.ComponentProps<"button"> & { className?: string };
 
 function Button(props: Props) {
   return (

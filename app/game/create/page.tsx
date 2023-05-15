@@ -11,7 +11,8 @@ import { z } from "zod";
 
 function CreatePage() {
   const router = useRouter();
-  const nameRef = useRef<HTMLInputElement>(null);
+  const roomNameRef = useRef<HTMLInputElement>(null);
+  const playerNameRef = useRef<HTMLInputElement>(null);
   const limitRef = useRef<HTMLInputElement>(null);
   const navbarContext = useContext(NavbarContext);
 
@@ -29,14 +30,15 @@ function CreatePage() {
         try {
           const roomData: GameRoomType = {
             id: uuid(),
-            name: nameRef.current?.value as string,
+            name: roomNameRef.current?.value as string,
             playerLimit: parseInt(limitRef.current?.value as string),
+            playerName: playerNameRef.current?.value as string,
           };
 
           GameRoomSchema.parse(roomData);
 
           router.push(
-            `/game/room/${roomData.id}/${roomData.name}/${roomData.playerLimit}`
+            `/game/room/${roomData.id}/${roomData.name}/${roomData.playerLimit}/${roomData.playerName}/host`
           );
         } catch (err) {
           if (err instanceof z.ZodError) {
@@ -49,7 +51,12 @@ function CreatePage() {
       }}
     >
       <span className=" w-11/12 flex flex-col items-center space-y-12">
-        <Input name="name" placeholder="Room name" type="text" ref={nameRef} />
+        <Input
+          name="room-name"
+          placeholder="Room name"
+          type="text"
+          ref={roomNameRef}
+        />
         <Input
           name="player-limit"
           placeholder="Player limit"
@@ -57,6 +64,12 @@ function CreatePage() {
           min={2}
           max={12}
           ref={limitRef}
+        />
+        <Input
+          name="player-name"
+          placeholder="Your name"
+          type="text"
+          ref={playerNameRef}
         />
         <Button className=" transition ease-in-out duration-150 hover:scale-110">
           Go to game room

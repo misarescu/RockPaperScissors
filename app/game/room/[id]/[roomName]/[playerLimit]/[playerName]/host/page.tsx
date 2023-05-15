@@ -1,7 +1,5 @@
 "use client";
 import Button from "@/components/Button";
-import { NavbarContext } from "@/context/NavbarContext";
-import { useContext, useEffect } from "react";
 
 type Props = {
   params: {
@@ -13,9 +11,17 @@ type Props = {
 };
 
 function GameRoom({ params }: Props) {
+  const roomId = decodeURI(params.id);
   return (
     <>
-      <Button>Copy room id</Button>
+      <Button
+        onClick={() => {
+          navigator.clipboard.writeText(roomId);
+          // alert(`copied ${roomId}`);
+        }}
+      >
+        Copy room id
+      </Button>
       <p>Waiting for others to join...</p>
     </>
   );

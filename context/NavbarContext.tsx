@@ -25,7 +25,7 @@ const reducer = (state: StateType, action: ActionType) => {
       console.log("payload to change title is: ", action.payload.navTitle);
       return { ...state, navTitle: action.payload.navTitle };
     case "RESET":
-      return { ...state, navTitle: "Play the best version of 🪨 🧻 ✂️" };
+      return { ...state, ...initialState };
     default:
       return state;
   }

@@ -1,5 +1,4 @@
 "use client";
-import Button from "@/components/Button";
 import { NavbarContext } from "@/context/NavbarContext";
 import { useContext, useEffect } from "react";
 
@@ -15,9 +14,8 @@ type Props = {
 function GameRoomLayout({ params, children }: Props) {
   const navbarContext = useContext(NavbarContext);
   let connectedPlayers = 1;
-  const roomTitle = `${decodeURI(
-    params.roomName
-  )} | player count: ${connectedPlayers}/${params.playerLimit}`; // need to decode in case the room name contains encoded characters
+  const roomName = decodeURI(params.roomName);
+  const roomTitle = `${roomName} | player count: ${connectedPlayers}/${params.playerLimit}`; // need to decode in case the room name contains encoded characters
   useEffect(() => {
     navbarContext.dispatch({
       type: "UPDATE",

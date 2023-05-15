@@ -13,6 +13,7 @@ type Props = {};
 function JoinPage({}: Props) {
   const navbarContext = useContext(NavbarContext);
   const urlRef = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     navbarContext.dispatch({
       type: "UPDATE",
@@ -38,6 +39,12 @@ function JoinPage({}: Props) {
       }}
     >
       <span className=" w-11/12 flex flex-col items-center space-y-12">
+        <Input
+          name="name"
+          placeholder="Enter your name"
+          type="text"
+          ref={nameRef}
+        />
         <Input name="url" placeholder="Game URL" type="url" ref={urlRef} />
         <Button className=" transition ease-in-out duration-150 hover:scale-110">
           Join Game

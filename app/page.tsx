@@ -10,6 +10,7 @@ export default function Home() {
   const navbarContext = useContext(NavbarContext);
   useEffect(() => {
     navbarContext.dispatch({ type: "RESET" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>

@@ -20,6 +20,7 @@ function CreatePage() {
       type: "UPDATE",
       payload: { navTitle: "Create Room" },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

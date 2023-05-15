@@ -21,6 +21,7 @@ function GameRoom({ params }: Props) {
       type: "UPDATE",
       payload: { navTitle: roomTitle },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="h-full py-12">

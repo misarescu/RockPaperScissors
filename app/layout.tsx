@@ -1,6 +1,5 @@
-import { useContext } from "react";
 import "./globals.css";
-import { NavbarContext, NavbarContextProvider } from "@/context/NavbarContext";
+import { NavbarContextProvider } from "@/context/NavbarContext";
 import NavBar from "@/components/NavBar";
 
 export const metadata = {

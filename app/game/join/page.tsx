@@ -2,7 +2,8 @@
 import Button from "@/components/Button";
 import Form from "@/components/Form";
 import Input from "@/components/Input";
-import React, { useRef } from "react";
+import { NavbarContext } from "@/context/NavbarContext";
+import React, { useContext, useEffect, useRef } from "react";
 import { z } from "zod";
 
 const URLSchema = z.string().url({ message: "Invalid game url" });
@@ -10,7 +11,15 @@ const URLSchema = z.string().url({ message: "Invalid game url" });
 type Props = {};
 
 function JoinPage({}: Props) {
+  const navbarContext = useContext(NavbarContext);
   const urlRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    navbarContext.dispatch({
+      type: "UPDATE",
+      payload: { navTitle: "Join Game" },
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <Form
       onSubmit={(e) => {

@@ -17,7 +17,7 @@ function GameRoom({ params }: Props) {
       <Button
         onClick={() => {
           navigator.clipboard.writeText(roomId);
-          // alert(`copied ${roomId}`);
+          alert(`copied room id: ${roomId}`);
         }}
       >
         Copy room id

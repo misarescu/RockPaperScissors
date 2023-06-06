@@ -1,9 +1,10 @@
-import { createServer } from "http";
 import { Server } from "socket.io";
 
-const httpServer = createServer();
-const io = new Server(httpServer, {
-  /* options */
+const io = new Server({
+  cors: {
+    origin: "http://localhost",
+    methods: ["GET", "POST"],
+  },
 });
 
 io.on("connection", (socket) => {
@@ -14,4 +15,4 @@ io.on("connection", (socket) => {
   });
 });
 
-httpServer.listen(3000);
+io.listen(8080);

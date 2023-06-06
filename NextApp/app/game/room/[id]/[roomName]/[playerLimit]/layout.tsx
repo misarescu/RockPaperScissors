@@ -1,6 +1,7 @@
 "use client";
 import { NavbarContext } from "@/context/NavbarContext";
 import { useContext, useEffect } from "react";
+import { socket } from "@/utils/socket";
 
 type Props = {
   params: {
@@ -17,6 +18,13 @@ function GameRoomLayout({ params, children }: Props) {
   const roomName = decodeURI(params.roomName);
   const roomTitle = `${roomName} | player count: ${connectedPlayers}/${params.playerLimit}`; // need to decode in case the room name contains encoded characters
   useEffect(() => {
+    socket.connect();
+    socket.on("connect", () => {
+      console.log("Connected to socket");
+    });
+    socket.on("disconnect", () => {
+      console.log("disconnected");
+    });
     navbarContext.dispatch({
       type: "UPDATE",
       payload: { navTitle: roomTitle },

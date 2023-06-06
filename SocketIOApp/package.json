@@ -2,7 +2,13 @@
   "name": "rock-paper-scissors-game-logic",
   "version": "0.0.1",
   "descriptioh": "Game logic of the rock paper scissors game. Here the romms are hosted and the backend logic is happening.",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
   "dependencies": {
-    "express": "^4.18.2"
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "nodemon": "^2.0.22",
+    "socket.io": "^4.6.2"
   }
 }

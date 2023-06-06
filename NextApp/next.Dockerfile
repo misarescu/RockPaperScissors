@@ -5,9 +5,10 @@ COPY . .
 
 RUN npm install yarn 
 RUN yarn install
+RUN yarn build
 
 ENV NEXT-TELEMETRY_DISABLED 1
 
 EXPOSE 3000
 
-CMD yarn dev
+CMD yarn start

@@ -1,0 +1,8 @@
+{
+  "name": "rock-paper-scissors-game-logic",
+  "version": "0.0.1",
+  "descriptioh": "Game logic of the rock paper scissors game. Here the romms are hosted and the backend logic is happening.",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

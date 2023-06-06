@@ -4,6 +4,7 @@ import Form from "@/components/Form";
 import Input from "@/components/Input";
 import { NavbarContext } from "@/context/NavbarContext";
 import { GameRoomSchema, GameRoomType } from "@/types/GameRoom";
+import { socket } from "@/utils/socket";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useRef } from "react";
 import { v4 as uuid } from "uuid";
@@ -37,6 +38,7 @@ function CreatePage() {
 
           GameRoomSchema.parse(roomData);
 
+          socket.emit("create-room", { ...roomData });
           router.push(
             `/game/room/${roomData.id}/${roomData.name}/${roomData.playerLimit}/${roomData.playerName}/host`
           );

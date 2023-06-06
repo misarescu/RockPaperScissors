@@ -18,7 +18,6 @@ function GameRoomLayout({ params, children }: Props) {
   const roomName = decodeURI(params.roomName);
   const roomTitle = `${roomName} | player count: ${connectedPlayers}/${params.playerLimit}`; // need to decode in case the room name contains encoded characters
   useEffect(() => {
-    socket.connect();
     socket.on("connect", () => {
       console.log("Connected to socket");
     });

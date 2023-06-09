@@ -17,8 +17,6 @@ type Props = {
 function GameRoomLayout({ params, children }: Props) {
   const navbarContext = useContext(NavbarContext);
   const roomContext = useContext(RoomContext);
-  const [connectedPlayers, setConnectedPlayers] = useState(0);
-  const [roomName, setRoomName] = useState("");
   // const roomTitle = `${roomName} | player count: ${connectedPlayers}/${params.playerLimit}`; // need to decode in case the room name contains encoded characters
 
   socket.on("connect", () => {
@@ -38,7 +36,6 @@ function GameRoomLayout({ params, children }: Props) {
         payload: { navTitle: roomTitle },
       });
       const playerCount = room.playerList.length;
-      setConnectedPlayers(playerCount);
     });
   }, [roomContext, navbarContext]);
 
@@ -57,12 +54,12 @@ function GameRoomLayout({ params, children }: Props) {
             type: "UPDATE",
             payload: { navTitle: roomTitle },
           });
-          setRoomName(response.room?.name as string);
-          const playerCount = response.room?.playerList.length;
-          setConnectedPlayers(playerCount as number);
         }
       }
     );
+    return () => {
+      socket.disconnect(); // if you leave the game room then disconnect
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -30,8 +30,9 @@ io.on("connection", (socket) => {
 
   socket.on(
     "create-room",
-    ({ id, name: roomName, playerLimit, playerName }) => {
+    ({ id, name: roomName, playerLimit, playerName }, callback) => {
       let room = getRoomByID(id);
+      console.log(room);
       if (!isRoom(room)) {
         const newRoom = {
           id,
@@ -40,11 +41,12 @@ io.on("connection", (socket) => {
           playerLimit,
           playerList: [playerName],
         };
+        callback({ status: "ok", room: newRoom });
         ROOMS.push(newRoom);
         socket.join(id);
-        socket.to(id).emit("join-ok", newRoom);
-        console.log(ROOMS);
+        console.log(newRoom);
       } else {
+        callback({ status: "nok" });
         console.log("Room already created");
       }
     }
@@ -68,6 +70,16 @@ io.on("connection", (socket) => {
         callback({ status: "ok", room });
         console.log(room);
       }
+    }
+  });
+
+  socket.on("room-info", ({ id }, callback) => {
+    let room = getRoomByID(id);
+    if (isRoom(room)) {
+      callback({ status: "ok", room });
+      socket.to(id).emit("server-room-info", room);
+    } else {
+      callback({ status: "nok" });
     }
   });
 

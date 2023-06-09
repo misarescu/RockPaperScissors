@@ -35,9 +35,10 @@ function JoinPage({}: Props) {
             "join-room",
             { id: urlValue, playerName: nameValue },
             (response: any) => {
+              console.log(response.room);
               if (response.status === "ok") {
                 router.push(
-                  `/game/room/${response.room.id}/${response.room.name}/${response.room.playerLimit}/${response.room.playerName}/host`
+                  `/game/room/${response.room.id}/${response.room.roomName}/${response.room.playerLimit}/${nameValue}/guest`
                 );
               }
               if (response.status === "nok") {

@@ -38,10 +38,15 @@ function CreatePage() {
 
           GameRoomSchema.parse(roomData);
 
-          socket.emit("create-room", { ...roomData });
-          router.push(
-            `/game/room/${roomData.id}/${roomData.name}/${roomData.playerLimit}/${roomData.playerName}/host`
-          );
+          socket.emit("create-room", { ...roomData }, (response: any) => {
+            if (response.status === "ok") {
+              router.push(
+                `/game/room/${roomData.id}/${roomData.name}/${roomData.playerLimit}/${roomData.playerName}/host`
+              );
+            } else {
+              alert("The room ids are the same, try again");
+            }
+          });
         } catch (err) {
           if (err instanceof z.ZodError) {
             const errorMessage = err.issues

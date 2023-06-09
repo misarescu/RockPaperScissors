@@ -30,13 +30,13 @@ io.on("connection", (socket) => {
 
   socket.on(
     "create-room",
-    ({ id, name: roomName, playerLimit, playerName }, callback) => {
+    ({ id, name, playerLimit, playerName }, callback) => {
       let room = getRoomByID(id);
       console.log(room);
       if (!isRoom(room)) {
         const newRoom = {
           id,
-          roomName,
+          name,
           playerCount: 1,
           playerLimit,
           playerList: [playerName],
@@ -60,7 +60,7 @@ io.on("connection", (socket) => {
       if (room.playerList.includes(playerName)) {
         callback({ status: "nok" });
         console.log(
-          `Player ${playerName} is already present in room ${room.roomName}`
+          `Player ${playerName} is already present in room ${room.name}`
         );
       } else {
         socket.join(id);

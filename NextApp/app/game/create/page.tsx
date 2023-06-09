@@ -34,6 +34,7 @@ function CreatePage() {
             name: roomNameRef.current?.value as string,
             playerLimit: parseInt(limitRef.current?.value as string),
             playerName: playerNameRef.current?.value as string,
+            playerList: [],
           };
 
           GameRoomSchema.parse(roomData);

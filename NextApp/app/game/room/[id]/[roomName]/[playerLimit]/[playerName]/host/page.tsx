@@ -15,9 +15,14 @@ function GameRoom({ params }: Props) {
   return (
     <>
       <Button
-        onClick={() => {
-          navigator.clipboard.writeText(roomId);
-          alert(`copied room id: ${roomId}`);
+        onClick={async () => {
+          try {
+            await navigator.clipboard.writeText(roomId);
+
+            alert(`copied room id: ${roomId}`);
+          } catch (err) {
+            alert(`error ${err}`);
+          }
         }}
       >
         Copy room id

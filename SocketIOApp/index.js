@@ -42,7 +42,7 @@ io.on("connection", (socket) => {
         };
         ROOMS.push(newRoom);
         socket.join(id);
-        socket.to(id).emit(newRoom);
+        socket.to(id).emit("join-ok", newRoom);
         console.log(ROOMS);
       } else {
         console.log("Room already created");
@@ -50,16 +50,24 @@ io.on("connection", (socket) => {
     }
   );
 
-  socket.on("join-room", ({ id, playerName }) => {
+  socket.on("join-room", ({ id, playerName }, callback) => {
     console.log(id);
     let room = getRoomByID(id);
     if (isRoom(room)) {
       console.log("This room exists as");
-      socket.join(id);
-      room.playerCount++;
-      room.playerList.push(playerName);
-      updateRoomByID(room);
-      console.log(room);
+      if (room.playerList.includes(playerName)) {
+        callback({ status: "nok" });
+        console.log(
+          `Player ${playerName} is already present in room ${room.roomName}`
+        );
+      } else {
+        socket.join(id);
+        room.playerCount++;
+        room.playerList.push(playerName);
+        updateRoomByID(room);
+        callback({ status: "ok", room });
+        console.log(room);
+      }
     }
   });
 

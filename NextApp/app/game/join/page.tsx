@@ -4,6 +4,7 @@ import Form from "@/components/Form";
 import Input from "@/components/Input";
 import { NavbarContext } from "@/context/NavbarContext";
 import { socket } from "@/utils/socket";
+import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useRef } from "react";
 import { z } from "zod";
 
@@ -15,6 +16,7 @@ function JoinPage({}: Props) {
   const navbarContext = useContext(NavbarContext);
   const urlRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
   useEffect(() => {
     navbarContext.dispatch({
       type: "UPDATE",
@@ -29,7 +31,20 @@ function JoinPage({}: Props) {
           const urlValue = urlRef.current?.value as string;
           const nameValue = nameRef.current?.value as string;
           URLSchema.parse(urlValue);
-          socket.emit("join-room", { id: urlValue, playerName: nameValue });
+          socket.emit(
+            "join-room",
+            { id: urlValue, playerName: nameValue },
+            (response: any) => {
+              if (response.status === "ok") {
+                router.push(
+                  `/game/room/${response.room.id}/${response.room.name}/${response.room.playerLimit}/${response.room.playerName}/host`
+                );
+              }
+              if (response.status === "nok") {
+                alert("name already taken in the room");
+              }
+            }
+          );
           console.log("URL is: ", urlValue);
         } catch (err) {
           if (err instanceof z.ZodError) {

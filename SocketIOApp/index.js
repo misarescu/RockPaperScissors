@@ -104,13 +104,17 @@ io.on("connection", (socket) => {
         console.log(mesasge);
         // player name is unique
       } else {
-        socket.join(id);
-        room.playerCount++;
-        room.playerList.push(playerName);
-        updateRoom(room);
-        addPlayer(playerName, socket.id);
-        callback({ status: "ok", room });
-        console.log(room);
+        if (room.playerCount < room.playerLimit) {
+          socket.join(id);
+          room.playerList.push(playerName);
+          room.playerCount = room.playerList.length;
+          updateRoom(room);
+          addPlayer(playerName, socket.id);
+          callback({ status: "ok", room });
+          console.log(room);
+        } else {
+          callback({ status: "nok", message: "Room is full" });
+        }
       }
       // room id is not good
     } else {

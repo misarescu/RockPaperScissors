@@ -43,7 +43,7 @@ function removePlayerBySocketId(socket_id) {
   PLAYERS = PLAYERS.filter((player) => player.socket_id !== socket_id);
 }
 
-function removePlayerFromRooms(playerName, socket) {
+function removePlayerFromRoomsAndNotifyClients(playerName, socket) {
   socket.rooms.forEach((room_id) => {
     let room = getRoomByID(room_id);
     // need to check because the socket id is also present here
@@ -133,7 +133,7 @@ io.on("connection", (socket) => {
     let player = findPlayerBySocketId(socket.id);
     if (player !== undefined) {
       console.log(`User ${player.playerName} disconnected 🔥`);
-      removePlayerFromRooms(player.playerName, socket);
+      removePlayerFromRoomsAndNotifyClients(player.playerName, socket);
       removePlayerBySocketId(socket.id);
     }
   });

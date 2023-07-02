@@ -1,6 +1,7 @@
 import { Server } from "socket.io";
 
-let ROOMS = [];
+let ROOMS = []; // array of {id: str, name: str, playerCount: number, playerLimit: number, playerList: [str]}
+let PLAYERS = []; // array of {playerName:str, socket_id: str}
 
 const io = new Server({
   cors: {
@@ -9,7 +10,7 @@ const io = new Server({
   },
 });
 
-function updateRoomByID(room) {
+function updateRoom(room) {
   const roomIdx = ROOMS.findIndex((r) => r.id === room.id);
 
   const newRooms = new Array(ROOMS);
@@ -23,6 +24,40 @@ function getRoomByID(id) {
 
 function isRoom(room) {
   return room != undefined;
+}
+
+function removeRoom(room) {
+  console.log(`room %o has been deleted`, room);
+  ROOMS = ROOMS.filter((r) => r.id !== room.id);
+}
+
+function addPlayer(playerName, socket_id) {
+  PLAYERS.push({ playerName, socket_id });
+}
+
+function findPlayerBySocketId(socket_id) {
+  return PLAYERS.filter((player) => player.socket_id === socket_id).at(0);
+}
+
+function removePlayerBySocketId(socket_id) {
+  PLAYERS = PLAYERS.filter((player) => player.socket_id !== socket_id);
+}
+
+function removePlayerFromRooms(playerName, socket) {
+  socket.rooms.forEach((room_id) => {
+    let room = getRoomByID(room_id);
+    // need to check because the socket id is also present here
+    if (isRoom(room)) {
+      room.playerList = room.playerList.filter(
+        (player) => player !== playerName
+      );
+      room.playerCount = room.playerList.length;
+      if (room.playerCount > 0) {
+        updateRoom(room);
+        socket.to(room.id).emit("server-room-info", room);
+      } else removeRoom(room);
+    }
+  });
 }
 
 io.on("connection", (socket) => {
@@ -44,7 +79,9 @@ io.on("connection", (socket) => {
         callback({ status: "ok", room: newRoom });
         ROOMS.push(newRoom);
         socket.join(id);
+        addPlayer(playerName, socket.id);
         console.log(newRoom);
+        console.log(PLAYERS);
       } else {
         callback({ status: "nok" });
         console.log("Room already created");
@@ -70,7 +107,8 @@ io.on("connection", (socket) => {
         socket.join(id);
         room.playerCount++;
         room.playerList.push(playerName);
-        updateRoomByID(room);
+        updateRoom(room);
+        addPlayer(playerName, socket.id);
         callback({ status: "ok", room });
         console.log(room);
       }
@@ -92,7 +130,12 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnecting", () => {
-    console.log(`User ${socket.id} disconnected 🔥`);
+    let player = findPlayerBySocketId(socket.id);
+    if (player !== undefined) {
+      console.log(`User ${player.playerName} disconnected 🔥`);
+      removePlayerFromRooms(player.playerName, socket);
+      removePlayerBySocketId(socket.id);
+    }
   });
 });
 

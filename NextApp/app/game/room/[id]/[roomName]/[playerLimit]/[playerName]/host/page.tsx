@@ -14,19 +14,26 @@ function GameRoom({ params }: Props) {
   const roomId = decodeURI(params.id);
   return (
     <>
-      <Button
-        onClick={async () => {
-          try {
-            await navigator.clipboard.writeText(roomId);
-
-            alert(`copied room id: ${roomId}`);
-          } catch (err) {
-            alert(`error ${err}`);
-          }
-        }}
-      >
-        Copy room id
-      </Button>
+      <div className="flex flex-row">
+        <Button
+          onClick={async () => {
+            try {
+              await navigator.clipboard.writeText(roomId);
+            } catch (err) {
+              alert(`error ${err}`);
+            }
+          }}
+        >
+          Copy room id
+        </Button>
+        <Button
+          onClick={() => {
+            alert("Start the game placeholder");
+          }}
+        >
+          Start Game
+        </Button>
+      </div>
       <p>Waiting for others to join...</p>
     </>
   );

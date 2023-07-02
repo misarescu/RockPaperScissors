@@ -42,7 +42,7 @@ function JoinPage({}: Props) {
                 );
               }
               if (response.status === "nok") {
-                alert("name already taken in the room");
+                alert(response.message);
               }
             }
           );
@@ -65,9 +65,7 @@ function JoinPage({}: Props) {
           ref={nameRef}
         />
         <Input name="url" placeholder="Room ID" type="text" ref={urlRef} />
-        <Button className=" transition ease-in-out duration-150 hover:scale-110">
-          Join Game
-        </Button>
+        <Button>Join Game</Button>
       </span>
     </Form>
   );

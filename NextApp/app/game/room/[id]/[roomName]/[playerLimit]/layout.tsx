@@ -35,7 +35,6 @@ function GameRoomLayout({ params, children }: Props) {
         type: "UPDATE",
         payload: { navTitle: roomTitle },
       });
-      const playerCount = room.playerList.length;
     });
   }, [roomContext, navbarContext]);
 

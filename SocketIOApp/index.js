@@ -55,13 +55,17 @@ io.on("connection", (socket) => {
   socket.on("join-room", ({ id, playerName }, callback) => {
     console.log(id);
     let room = getRoomByID(id);
+    // room id is good
     if (isRoom(room)) {
       console.log("This room exists as");
+      // player name is taken
       if (room.playerList.includes(playerName)) {
-        callback({ status: "nok" });
-        console.log(
-          `Player ${playerName} is already present in room ${room.name}`
-        );
+        callback({
+          status: "nok",
+          message: `Player ${playerName} is already present in room ${room.name}`,
+        });
+        console.log(mesasge);
+        // player name is unique
       } else {
         socket.join(id);
         room.playerCount++;
@@ -70,6 +74,10 @@ io.on("connection", (socket) => {
         callback({ status: "ok", room });
         console.log(room);
       }
+      // room id is not good
+    } else {
+      callback({ status: "nok", message: "Room id is wrong" });
+      console.log(mesasge);
     }
   });
 
@@ -83,7 +91,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("disconnect", ({ id, playerName }, callback) => {
+  socket.on("disconnecting", ({ id, playerName }, callback) => {
     console.log(`User ${playerName} disconnected 🔥`);
   });
 });

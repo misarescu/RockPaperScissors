@@ -79,9 +79,7 @@ function CreatePage() {
           type="text"
           ref={playerNameRef}
         />
-        <Button className=" transition ease-in-out duration-150 hover:scale-110">
-          Go to game room
-        </Button>
+        <Button>Go to game room</Button>
       </span>
     </Form>
   );

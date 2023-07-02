@@ -26,7 +26,7 @@ function isRoom(room) {
 }
 
 io.on("connection", (socket) => {
-  console.log("User Connected 🔌");
+  console.log(`User Connected 🔌 with id: ${socket.id}`);
 
   socket.on(
     "create-room",
@@ -91,8 +91,8 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("disconnecting", ({ id, playerName }, callback) => {
-    console.log(`User ${playerName} disconnected 🔥`);
+  socket.on("disconnecting", () => {
+    console.log(`User ${socket.id} disconnected 🔥`);
   });
 });
 

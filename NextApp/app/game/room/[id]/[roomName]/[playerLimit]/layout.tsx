@@ -19,14 +19,6 @@ function GameRoomLayout({ params, children }: Props) {
   const roomContext = useContext(RoomContext);
   // const roomTitle = `${roomName} | player count: ${connectedPlayers}/${params.playerLimit}`; // need to decode in case the room name contains encoded characters
 
-  socket.on("connect", () => {
-    console.log("Connected to socket");
-  });
-
-  socket.on("disconnect", () => {
-    console.log("disconnected");
-  });
-
   useEffect(() => {
     socket.on("server-room-info", (room: GameRoomType) => {
       roomContext.dispatch({ type: "UPDATE", payload: room as GameRoomType });
@@ -57,6 +49,7 @@ function GameRoomLayout({ params, children }: Props) {
       }
     );
     return () => {
+      console.log(`Disconnected from socket with id: ${socket.id}`);
       socket.disconnect(); // if you leave the game room then disconnect
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

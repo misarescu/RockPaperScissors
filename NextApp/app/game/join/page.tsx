@@ -3,6 +3,7 @@ import Button from "@/components/Button";
 import Form from "@/components/Form";
 import Input from "@/components/Input";
 import { NavbarContext } from "@/context/NavbarContext";
+import { PlayerContext } from "@/context/PlayerContext";
 import { socket } from "@/utils/socket";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useRef } from "react";
@@ -17,6 +18,7 @@ function JoinPage({}: Props) {
   const urlRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const playerContext = useContext(PlayerContext);
   useEffect(() => {
     navbarContext.dispatch({
       type: "UPDATE",
@@ -37,6 +39,10 @@ function JoinPage({}: Props) {
             (response: any) => {
               console.log(response.room);
               if (response.status === "ok") {
+                playerContext.dispatch({
+                  type: "UPDATE",
+                  payload: { id: socket.id, name: nameValue, score: 0 },
+                });
                 router.push(
                   `/game/room/${response.room.id}/${response.room.roomName}/${response.room.playerLimit}/${nameValue}/guest`
                 );

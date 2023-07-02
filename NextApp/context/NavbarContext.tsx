@@ -5,9 +5,7 @@ import React, { Dispatch, createContext, useReducer } from "react";
 export type ActionType =
   | {
       type: "UPDATE";
-      payload: {
-        navTitle: string;
-      };
+      payload: StateType;
     }
   | {
       type: "RESET";

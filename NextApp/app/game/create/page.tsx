@@ -3,6 +3,7 @@ import Button from "@/components/Button";
 import Form from "@/components/Form";
 import Input from "@/components/Input";
 import { NavbarContext } from "@/context/NavbarContext";
+import { PlayerContext } from "@/context/PlayerContext";
 import { GameRoomSchema, GameRoomType } from "@/types/GameRoom";
 import { socket } from "@/utils/socket";
 import { useRouter } from "next/navigation";
@@ -16,11 +17,20 @@ function CreatePage() {
   const playerNameRef = useRef<HTMLInputElement>(null);
   const limitRef = useRef<HTMLInputElement>(null);
   const navbarContext = useContext(NavbarContext);
+  const playerContext = useContext(PlayerContext);
 
   useEffect(() => {
     navbarContext.dispatch({
       type: "UPDATE",
       payload: { navTitle: "Create Room" },
+    });
+    playerContext.dispatch({
+      type: "UPDATE",
+      payload: {
+        id: "",
+        name: "",
+        score: 0,
+      },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -41,6 +51,10 @@ function CreatePage() {
 
           socket.emit("create-room", { ...roomData }, (response: any) => {
             if (response.status === "ok") {
+              playerContext.dispatch({
+                type: "UPDATE",
+                payload: { id: socket.id, name: roomData.playerName, score: 0 },
+              });
               router.push(
                 `/game/room/${roomData.id}/${roomData.name}/${roomData.playerLimit}/${roomData.playerName}/host`
               );
